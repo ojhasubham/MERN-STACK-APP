@@ -24,7 +24,7 @@ module.exports = function (app) {
     "preflightContinue": true
   };
   app.use(cors(corsOptions));
-  app.set('views', config.root + '/server/views');
+  app.set('views', config.root + '/views');
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
   app.use(compression());
