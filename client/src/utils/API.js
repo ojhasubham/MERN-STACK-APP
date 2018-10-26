@@ -1,5 +1,5 @@
 import axios from 'axios';
-const BASIC_URL = 'https://mern-stack-app.herokuapp.com/';
+const BASIC_URL = 'https://mern-stack-app.herokuapp.com';
 export default {
 	// Gets all books
 	getBooks: function() {
