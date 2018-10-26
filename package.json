@@ -1,0 +1,32 @@
+{
+	"name": "express-demo",
+	"version": "0.0.1",
+	"description": "",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js",
+		"server": "nodemon server.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "subham ojha",
+	"license": "MIT",
+	"dependencies": {
+		"body-parser": "^1.18.3",
+		"compression": "^1.7.3",
+		"cookie-parser": "^1.4.3",
+		"cors": "^2.8.4",
+		"dotenv": "^1.2.0",
+		"ejs": "~0.8.4",
+		"errorhandler": "~1.0.0",
+		"express": "^4.16.3",
+		"lodash": "^4.17.11",
+		"method-override": "^3.0.0",
+		"mongoose": "^5.3.2",
+		"morgan": "~1.0.0",
+		"serve-favicon": "^2.5.0"
+	},
+	"devDependencies": {
+		"nodemon": "^1.18.4"
+	}
+}
