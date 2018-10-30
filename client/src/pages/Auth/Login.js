@@ -14,7 +14,12 @@ class Login extends Component {
 		errorResponse: ''
 	};
 
-	componentDidMount = () => { }
+	componentDidMount = () => { 
+		let token = localStorage.getItem('token')
+		if (token) {
+			this.props.history.push('/books')
+		}
+	}
 	handleInputChange = event => {
 		const { name, value } = event.target;
 		this.setState({
@@ -74,7 +79,7 @@ class Login extends Component {
 				localStorage.setItem('email', email);
 				localStorage.setItem('user', JSON.stringify(data));
 				this.setState({ email: '', password: '' });
-				this.props.history.push('/books')
+				this.props.history.push('/books');
 			} else {
 				this.setState({ errorResponse: res && res.response && res.response.data && res.response.data.message ? res.response.data.message : 'Something went wrong' })
 			}
