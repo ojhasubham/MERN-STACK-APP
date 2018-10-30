@@ -5,7 +5,7 @@
 'use strict';
 
 const passport = require('passport');
-const bookRoutes = require('../controllers/Books');
+const bookRoutes = require('../controllers/books');
 const authRoutes = require('../controllers/auth');
 const errors = require('../components/errors');
 const path = require('path');
