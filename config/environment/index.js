@@ -27,10 +27,8 @@ const all = {
   // Should we populate the DB with sample data?
   seedDB: false,
 
-  // Secret for session, you will want to change this and make it an environment variable
-  secrets: {
-    session: 'demo-site-secret'
-  },
+  // Secret value, you will want to change this and make it an environment variable
+  secret: 'stack-secret-app',
 
   // List of user roles
   userRoles: ['guest', 'user', 'admin'],

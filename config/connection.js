@@ -1,7 +1,14 @@
+/**
+ * Database connection configuration
+*/
+
+'use strict';
+
 const mongoose = require('mongoose');
 const config = require('./environment');
-
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://subham:subham123@ds141613.mlab.com:41613/mern_db');
+const { MONGOLAB_URI } = require('../constant');
+console.log('process.env.MONGOLAB_URI', process.env.MONGOLAB_URI)
+mongoose.connect(process.env.MONGOLAB_URI || MONGOLAB_URI);
 // When successfully connected
 mongoose.connection.on('connected', () => {
     console.log('Established Mongoose Default Connection');

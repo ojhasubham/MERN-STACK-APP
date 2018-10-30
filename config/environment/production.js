@@ -21,8 +21,3 @@ module.exports = {
             'mongodb://localhost/demosite'
   }
 };
-
-// const dbuser = 'subham';
-// const dbpassword = 'subham123';
-
-// const MONGODB_URI = `mongodb://${dbuser}:${dbpassword}@ds125453.mlab.com:25453/mern-example`;

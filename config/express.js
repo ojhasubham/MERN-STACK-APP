@@ -21,7 +21,7 @@ module.exports = function (app) {
   const corsOptions = {
     "origin": "*",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-    "preflightContinue": true
+    "preflightContinue": false
   };
   app.use(cors(corsOptions));
   app.set('views', config.root + '/views');

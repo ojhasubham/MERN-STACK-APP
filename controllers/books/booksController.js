@@ -1,6 +1,11 @@
+/**
+ * Defining all methods of books and business logic for books routes
+ */
+
+'use strict';
+
 const Book = require('../../models/Books');
 
-// Defining all methods and business logic for routes
 module.exports = {
 	findAll: function(req, res) {
 		Book.find(req.query)

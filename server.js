@@ -18,6 +18,9 @@ const server = require('http').createServer(app);
 // require db connection
 require('./config/connection');
 
+//Add authentication
+require('./services/auth');
+
 //Configure express
 require('./config/express')(app);
 require('./routes/index')(app);

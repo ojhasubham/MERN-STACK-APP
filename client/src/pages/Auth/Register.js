@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import DeleteBtn from '../../components/DeleteBtn';
 import Jumbotron from '../../components/Jumbotron';
-import { Book } from '../../utils/httpServices';
+import { Auth } from '../../utils/httpServices';
 import { Link } from 'react-router-dom';
 import { Col, Row, Container } from '../../components/Grid';
 import { List, ListItem } from '../../components/List';
 import { Input, FormBtn } from '../../components/Form';
-class Books extends Component {
+
+class Register extends Component {
 	state = {
 		books: [],
 		title: '',
@@ -18,13 +19,13 @@ class Books extends Component {
 	}
 
 	loadBooks = () => {
-		Book.getBooks()
+		Auth.getBooks()
 			.then(res => this.setState({ books: res.data, title: '', author: '' }))
 			.catch(err => console.log(err));
 	};
 
 	deleteBook = id => {
-		Book.deleteBook(id)
+		Auth.deleteBook(id)
 			.then(res => this.loadBooks())
 			.catch(err => console.log(err));
 	};
@@ -39,7 +40,7 @@ class Books extends Component {
 	handleFormSubmit = event => {
 		event.preventDefault();
 		if (this.state.title && this.state.author) {
-			Book.saveBook({
+			Auth.saveBook({
 				title: this.state.title,
 				author: this.state.author
 			})
@@ -59,14 +60,16 @@ class Books extends Component {
 						<form>
 							<Input
 								value={this.state.title}
+								type="text"
 								onChange={this.handleInputChange}
 								name="title"
 								placeholder="Title (required)"
 							/>
 							<Input
 								value={this.state.author}
+								type="password"
 								onChange={this.handleInputChange}
-								name="author"
+								name="author"								
 								placeholder="Author (required)"
 							/>
 
@@ -105,4 +108,4 @@ class Books extends Component {
 	}
 }
 
-export default Books;
+export default Register;
