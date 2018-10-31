@@ -1,25 +1,28 @@
 import axios from 'axios';
 import { PROD_URL, DEV_URL } from '../constant';
 const BASIC_URL = process.env && process.env.NODE_ENV == 'development' ? DEV_URL : PROD_URL;
-const token = localStorage.getItem('token') ? localStorage.getItem('token') : null;
-const header = { headers: { "token": `${token}` } };
+
+const getHeaderToken = function () {	
+	let token = localStorage.getItem('token') ? localStorage.getItem('token') : null;
+	return { headers: { "token": `${token}` } };
+}
 
 const Book = {
 	// Gets all books
 	getBooks: function () {
-		return axios.get(`${BASIC_URL}/api/books`, header);
+		return axios.get(`${BASIC_URL}/api/books`, getHeaderToken());
 	},
 	// Gets the book with the given id
 	getBook: function (id) {
-		return axios.get(`${BASIC_URL}/api/books/${id}`, header);
+		return axios.get(`${BASIC_URL}/api/books/${id}`, getHeaderToken());
 	},
 	// Deletes the book with the given id
 	deleteBook: function (id) {
-		return axios.delete(`${BASIC_URL}/api/books/${id}`, header);
+		return axios.delete(`${BASIC_URL}/api/books/${id}`, getHeaderToken());
 	},
 	// Saves a book to the database
 	saveBook: function (bookData) {
-		return axios.post(`${BASIC_URL}/api/books/`, bookData, header);
+		return axios.post(`${BASIC_URL}/api/books/`, bookData, getHeaderToken());
 	}
 };
 

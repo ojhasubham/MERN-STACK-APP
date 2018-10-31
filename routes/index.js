@@ -9,6 +9,7 @@ const bookRoutes = require('../controllers/books');
 const authRoutes = require('../controllers/auth');
 const errors = require('../components/errors');
 const path = require('path');
+const config = require('../config/environment');
 
 module.exports = function (app) {
 
@@ -24,8 +25,12 @@ module.exports = function (app) {
 		.get(errors[404]);
 
 	// All other routes should redirect to the index.html
-	app.route('/*')
+	app.route('*')
 		.get(function (req, res) {
-			res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+			res.sendFile(path.join(config.root, 'client/dist/index.html'), function (err) {
+				if (err) {
+					res.status(500).send(err)
+				}
+			})
 		});
 };

@@ -6,11 +6,16 @@ import { Link } from 'react-router-dom';
 import { Col, Row, Container } from '../../components/Grid';
 import { List, ListItem } from '../../components/List';
 import { Input, FormBtn } from '../../components/Form';
+import { Loader } from '../../components/Loader';
+import { noRecordFound } from '../../components/MessageShow';
+import { NO_DATA_AVAILABLE, REQUEST_FAILED } from '../../constant';
 class Books extends Component {
 	state = {
 		books: [],
 		title: '',
-		author: ''
+		author: '',
+		isSuccess: null,
+		isFailed: null
 	};
 
 	componentDidMount = () => {
@@ -22,15 +27,28 @@ class Books extends Component {
 	}
 
 	loadBooks = () => {
+		Loader(true);
 		Book.getBooks()
-			.then(res => this.setState({ books: res.data, title: '', author: '' }))
-			.catch(err => console.log(err));
+			.then(res => {
+				Loader(false);
+				this.setState({ books: res.data, title: '', author: '', isSuccess: true, isFailed: null })
+			}).catch(err => {
+				Loader(false);
+				this.setState({ title: '', author: '', isSuccess: false, isFailed: true })
+				console.log(err)
+			});
 	};
 
 	deleteBook = id => {
+		Loader(true);
 		Book.deleteBook(id)
-			.then(res => this.loadBooks())
-			.catch(err => console.log(err));
+			.then(res => {
+				Loader(false);
+				this.loadBooks()
+			}).catch(err => {
+				Loader(false);
+				console.log(err)
+			});
 	};
 
 	handleInputChange = event => {
@@ -43,16 +61,22 @@ class Books extends Component {
 	handleFormSubmit = event => {
 		event.preventDefault();
 		if (this.state.title && this.state.author) {
+			Loader(true);
 			Book.saveBook({
 				title: this.state.title,
 				author: this.state.author
-			})
-				.then(res => this.loadBooks())
-				.catch(err => console.log(err));
+			}).then(res => {
+				Loader(false);
+				this.loadBooks()
+			}).catch(err => {
+				Loader(false);
+				console.log(err)
+			});
 		}
 	};
 
 	render() {
+		const { books, author, title, isSuccess, isFailed } = this.state
 		return (
 			<Container fluid>
 				<Row>
@@ -62,22 +86,19 @@ class Books extends Component {
 						</Jumbotron>
 						<form>
 							<Input
-								value={this.state.title}
+								value={title}
 								onChange={this.handleInputChange}
 								name="title"
 								placeholder="Title (required)"
 							/>
 							<Input
-								value={this.state.author}
+								value={author}
 								onChange={this.handleInputChange}
 								name="author"
 								placeholder="Author (required)"
 							/>
 
-							<FormBtn
-								disabled={!(this.state.author && this.state.title)}
-								onClick={this.handleFormSubmit}
-							>
+							<FormBtn disabled={!(author && title)} onClick={this.handleFormSubmit}							>
 								Submit Book
 							</FormBtn>
 						</form>
@@ -86,9 +107,9 @@ class Books extends Component {
 						<Jumbotron>
 							<h1>Books On My List</h1>
 						</Jumbotron>
-						{this.state.books.length ? (
+						{isSuccess && books && books.length > 0 ?
 							<List>
-								{this.state.books.map(book => (
+								{books.map(book => (
 									<ListItem key={book._id}>
 										<Link to={'/books/' + book._id}>
 											<strong>
@@ -98,10 +119,8 @@ class Books extends Component {
 										<DeleteBtn onClick={() => this.deleteBook(book._id)} />
 									</ListItem>
 								))}
-							</List>
-						) : (
-								<h3>No Results to Display</h3>
-							)}
+							</List> : isSuccess && noRecordFound(NO_DATA_AVAILABLE)}
+						{isSuccess === false && isFailed === true && noRecordFound(REQUEST_FAILED)}
 					</Col>
 				</Row>
 			</Container>

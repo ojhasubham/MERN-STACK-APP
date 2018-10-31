@@ -17,8 +17,12 @@ const uglifyPlugin = new UglifyJsPlugin({ cache: true, parallel: true, sourceMap
 module.exports = {
     entry: './src/index.js',
     output: {
-        path: path.resolve(__dirname, './dist'),
+        path: path.resolve('./dist'),
         filename: 'main.js'
+    },
+    devServer: {
+        historyApiFallback: true,
+        contentBase: '/'
     },
     module: {
         rules: [
