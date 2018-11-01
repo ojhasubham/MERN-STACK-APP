@@ -12,9 +12,8 @@ const path = require('path');
 const config = require('../config/environment');
 
 module.exports = function (app) {
-
+	
 	// Insert routes below
-
 	//We plugin our jwt strategy as a middleware so only verified users can access this route
 	app.use('/api/books', passport.authenticate('jwt', { session: false }), bookRoutes);	
 

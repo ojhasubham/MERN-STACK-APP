@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Modal from 'react-responsive-modal';
 import DeleteBtn from '../../components/DeleteBtn';
 import Jumbotron from '../../components/Jumbotron';
 import { Book } from '../../utils/httpServices';
@@ -8,14 +9,18 @@ import { List, ListItem } from '../../components/List';
 import { Input, FormBtn } from '../../components/Form';
 import { Loader } from '../../components/Loader';
 import { noRecordFound } from '../../components/MessageShow';
-import { NO_DATA_AVAILABLE, REQUEST_FAILED } from '../../constant';
+import { NO_DATA_AVAILABLE, REQUEST_FAILED, SOMETHING_WRONG, BOOK_ADDED, BOOK_DELETED } from '../../constant';
+import { errorToaster, successToaster } from '../../utils/toaster';
+import _ from 'lodash';
 class Books extends Component {
 	state = {
 		books: [],
 		title: '',
 		author: '',
 		isSuccess: null,
-		isFailed: null
+		isFailed: null,
+		bookId: '',
+		isDeleModelOpen: false
 	};
 
 	componentDidMount = () => {
@@ -31,22 +36,27 @@ class Books extends Component {
 		Book.getBooks()
 			.then(res => {
 				Loader(false);
-				this.setState({ books: res.data, title: '', author: '', isSuccess: true, isFailed: null })
+				this.setState({ books: res && res.data ? res.data: [], title: '', author: '', isSuccess: true, isFailed: null })
 			}).catch(err => {
 				Loader(false);
 				this.setState({ title: '', author: '', isSuccess: false, isFailed: true })
-				console.log(err)
+				err && err.data && err.data.message ? errorToaster(err.data.message) : errorToaster(SOMETHING_WRONG);
+				console.log("err", err)
 			});
 	};
 
-	deleteBook = id => {
+	deleteBook = () => {
+		let { bookId, books } = this.state;
 		Loader(true);
-		Book.deleteBook(id)
+		Book.deleteBook(bookId)
 			.then(res => {
 				Loader(false);
-				this.loadBooks()
+				_.remove(books, { _id: bookId });
+				this.setState({ isDeleModelOpen: false, bookId: '', book: books })
+				successToaster(BOOK_DELETED)
 			}).catch(err => {
 				Loader(false);
+				err && err.data && err.data.message ? errorToaster(err.data.message) : errorToaster(SOMETHING_WRONG);
 				console.log(err)
 			});
 	};
@@ -67,13 +77,41 @@ class Books extends Component {
 				author: this.state.author
 			}).then(res => {
 				Loader(false);
-				this.loadBooks()
+				let { data } = res;
+				successToaster(BOOK_ADDED)
+				this.setState({ title: '', author: '', books: this.state.books.concat([data]) })
 			}).catch(err => {
 				Loader(false);
-				console.log(err)
+				err && err.data && err.data.message ? errorToaster(err.data.message) : errorToaster(SOMETHING_WRONG);
+				console.log("err:", err)
 			});
 		}
 	};
+
+	deleteModel = () => {
+		let { isDeleModelOpen } = this.state;
+		return (
+			<Modal open={isDeleModelOpen} onClose={() => { this.setState({ isDeleModelOpen: false }) }} center>
+				<div>
+					<div className="modal-header">
+						<h4 className="modal-title">Delete Book</h4>
+					</div>
+					<div className="modal-body">
+						<div>
+							<span>
+								<h4>Are you sure, you want to delete book ?</h4>
+							</span>
+						</div>
+					</div>
+					<div className="modal-footer">
+						<button type="button" className="btn small-btn btn-danger" onClick={() => {
+							this.deleteBook()
+						}}>Confirm</button>
+						<button type="button" className="btn light-button" onClick={() => { this.setState({ isDeleModelOpen: false }) }}>Cancel</button>
+					</div>
+				</div>
+			</Modal>)
+	}
 
 	render() {
 		const { books, author, title, isSuccess, isFailed } = this.state
@@ -116,13 +154,14 @@ class Books extends Component {
 												{book.title} by {book.author}
 											</strong>
 										</Link>
-										<DeleteBtn onClick={() => this.deleteBook(book._id)} />
+										<DeleteBtn onClick={() => { this.setState({ isDeleModelOpen: true, bookId: book._id }) }} />
 									</ListItem>
 								))}
 							</List> : isSuccess && noRecordFound(NO_DATA_AVAILABLE)}
-						{isSuccess === false && isFailed === true && noRecordFound(REQUEST_FAILED)}
+						{isSuccess === false && isFailed === true && noRecordFound(NO_DATA_AVAILABLE)}
 					</Col>
 				</Row>
+				{this.deleteModel()}
 			</Container>
 		);
 	}

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Jumbotron from '../../components/Jumbotron';
 import { Auth } from '../../utils/httpServices';
+import { errorToaster, successToaster } from '../../utils/toaster';
 import { Col, Row, Container } from '../../components/Grid';
 import { Input, FormBtn, ErrorElement } from '../../components/Form';
 import { Loader } from '../../components/Loader';
-
+import { SOMETHING_WRONG, REQUEST_FAILED, EMAIL_NOT_BLANK, INCLUDE_VALID_EMAIL, INPUT_DOMAIN_EMAIL, INVALID_EMAIL, PASSWORD_NOT_BLANK } from '../../constant';
 class Login extends Component {
 	state = {
 		email: '',
@@ -14,7 +15,7 @@ class Login extends Component {
 		errorResponse: ''
 	};
 
-	componentDidMount = () => { 
+	componentDidMount = () => {
 		let token = localStorage.getItem('token')
 		if (token) {
 			this.props.history.push('/books')
@@ -35,19 +36,19 @@ class Login extends Component {
 
 		if (!email) {
 			isValid = false;
-			this.setState({ errorEmail: 'EMAIL field should not be blank!' })
+			this.setState({ errorEmail: EMAIL_NOT_BLANK })
 		} else if (email) {
 			let lastAtPos = email.lastIndexOf('@');
 			let lastDotPos = email.lastIndexOf('.');
 			if (email.search("@") === -1) {
 				isValid = false;
-				this.setState({ errorEmail: "Please include an '@' in the email address." })
+				this.setState({ errorEmail: INCLUDE_VALID_EMAIL })
 			} else if (!(lastAtPos < lastDotPos && lastDotPos > 2 && (email.length - lastDotPos) > 2)) {
 				isValid = false;
-				this.setState({ errorEmail: "Please input domain name after '@' in the email address." })
+				this.setState({ errorEmail: INPUT_DOMAIN_EMAIL })
 			} else if (!(lastAtPos < lastDotPos && lastAtPos > 0 && email.indexOf('@@') === -1 && lastDotPos > 2 && (email.length - lastDotPos) > 2)) {
 				isValid = false;
-				this.setState({ errorEmail: 'Enter a valid email address.' })
+				this.setState({ errorEmail: INVALID_EMAIL })
 			} else {
 				this.setState({ errorEmail: '' })
 			}
@@ -55,7 +56,7 @@ class Login extends Component {
 
 		if (!password) {
 			isValid = false;
-			this.setState({ errorPassword: 'Password field should not be blank!' })
+			this.setState({ errorPassword: PASSWORD_NOT_BLANK })
 		} else {
 			this.setState({ errorPassword: '' })
 		}
@@ -73,18 +74,20 @@ class Login extends Component {
 			password: password
 		}).then(res => {
 			Loader(false);
-			let { data: { successStatus = false, token = null, email = null } = {}, data } = res;
+			let { data: { successStatus = false, token = null, email = null, message = null } = {}, data } = res;
 			if (successStatus) {
 				localStorage.setItem('token', token);
 				localStorage.setItem('email', email);
 				localStorage.setItem('user', JSON.stringify(data));
 				this.setState({ email: '', password: '' });
 				this.props.history.push('/books');
+				message && successToaster(message);
 			} else {
-				this.setState({ errorResponse: res && res.response && res.response.data && res.response.data.message ? res.response.data.message : 'Something went wrong' })
+				errorToaster(REQUEST_FAILED)
 			}
 		}).catch(err => {
 			Loader(false);
+			err && err.data && err.data.successStatus == false ? this.setState({ errorResponse: err.data.message ? err.data.message : SOMETHING_WRONG }) : errorToaster(SOMETHING_WRONG);			
 			console.log("Error", err)
 		});
 	}

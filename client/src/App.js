@@ -1,15 +1,26 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Router, Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
 import Books from './pages/Books';
 import Detail from './pages/Detail';
 import { Login, Register } from './pages/Auth';
 import NoMatch from './pages/NoMatch';
 import Nav from './components/Nav';
+import { ToastContainer } from 'react-toastify';
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { createBrowserHistory } from 'history';
+export const history = createBrowserHistory();
 
 const App = () => (
-	<Router>
+	<Router history={history}>
 		<div>
+			<ToastContainer
+				position="top-right"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+			/>
 			<Nav />
 			<Switch>
 				<Route exact path="/" component={Login} />

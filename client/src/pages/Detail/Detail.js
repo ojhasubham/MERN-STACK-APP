@@ -4,9 +4,14 @@ import { Col, Row, Container } from '../../components/Grid';
 import Jumbotron from '../../components/Jumbotron';
 import { Book } from '../../utils/httpServices';
 import { Loader } from '../../components/Loader';
+import { noRecordFound } from '../../components/MessageShow';
+import { NO_DATA_AVAILABLE, REQUEST_FAILED, SOMETHING_WRONG } from '../../constant';
+import { errorToaster, successToaster } from '../../utils/toaster';
 class Detail extends Component {
 	state = {
-		book: {}
+		book: {},
+		isSuccess: null,
+		isFailed: null
 	};
 
 	componentDidMount() {
@@ -23,18 +28,20 @@ class Detail extends Component {
 		Book.getBook(id)
 			.then(res => {
 				Loader(false);
-				this.setState({ book: res.data })
+				this.setState({ book: res && res.data ? res.data: {}, isSuccess: true, isFailed: null })
 			}).catch(err => {
 				Loader(false);
+				this.setState({ isSuccess: false, isFailed: true })
+				err && err.data && err.data.message ? errorToaster(err.data.message) : errorToaster(SOMETHING_WRONG);
 				console.log(err)
 			});
 	};
 
 	render() {
-		let { book: { title, author } } = this.state;
+		let { book: { title, author }, isSuccess, isFailed } = this.state;
 		return (
 			<Container fluid>
-				{author && title && <div>
+				{isSuccess === true && author && title && <div>
 					<Row>
 						<Col size="md-12">
 							<Jumbotron>
@@ -50,6 +57,7 @@ class Detail extends Component {
 						</Col>
 					</Row>
 				</div>}
+				{isSuccess === false && isFailed === true && noRecordFound(NO_DATA_AVAILABLE)}
 			</Container>
 		);
 	}

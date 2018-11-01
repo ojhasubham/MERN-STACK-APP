@@ -16,13 +16,17 @@
   "dependencies": {
     "axios": "^0.18.0",
     "dotenv-webpack": "^1.5.7",
+    "history": "^4.7.2",
+    "lodash": "^4.17.11",
     "path": "^0.12.7",
     "react": "^16.5.2",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.5.2",
     "react-loader-spinner": "^2.0.6",
+    "react-responsive-modal": "^3.5.0",
     "react-router-dom": "^4.1.2",
-    "react-scripts": "2.0.4"
+    "react-scripts": "2.0.4",
+    "react-toastify": "^4.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

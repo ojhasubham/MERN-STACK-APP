@@ -5,10 +5,10 @@
 'use strict';
 
 module.exports = {
-    USER_NOT_FOUND: 'User not found.',
+    USER_NOT_FOUND: 'User not found, Please try again with valid user.',
     LOGGED_IN_SUCCESSFULLY: 'Logged In Successfully.',
     LOG_IN_FAIL: 'Login failed.',
-    PASSWORD_WRONG: 'Password is wrong.',
+    PASSWORD_WRONG: 'Your password is wrong, Please try again with correct password.',
     SIGN_UP_SUCCESSFUL: 'Signup Successfully.',
     SIGN_UP_FAIL: 'Signup failed.',
     DUPLICATE_EMAIL: 'Email is already registered, please try with different email',

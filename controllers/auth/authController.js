@@ -42,10 +42,11 @@ module.exports = {
 					err.successStatus = false;
 					res.send(err);
 				}
-				const token = jwt.sign({ data: user, exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24) }, secretValue);
+				const token = jwt.sign({ data: user, exp: Math.floor(Date.now() / 1000) + (60 * 60) }, secretValue);
 				let userInfo = {
 					successStatus: true,
 					_id: user._id,
+					message: info && info.message,
 					email: user.email,
 					token: token
 				}
