@@ -14,7 +14,8 @@ module.exports = {
 	signup: function (req, res, next) {
 		passport.authenticate('signup', { session: false }, (err, user, info) => {
 			if (!info)
-				info = { message: err && err.errmsg && err.errmsg.includes(DUPLICATE_ERROR_MATCH_TEXT) ? DUPLICATE_EMAIL : null }
+				info = { message: err && err.errmsg && err.errmsg.includes(DUPLICATE_ERROR_MATCH_TEXT) ? DUPLICATE_EMAIL : SIGN_UP_FAIL }
+				
 			if (err || !user) {
 				return res.status(400).json({
 					successStatus: false,

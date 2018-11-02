@@ -59,7 +59,7 @@ const Auth = {
 	},
 	// User registration
 	register: function (data) {
-		return axios.post(`/auth/register`, data);
+		return axios.post(`/auth/signup`, data);
 	}
 };
 

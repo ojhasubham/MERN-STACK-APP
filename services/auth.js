@@ -16,9 +16,11 @@ const secretValue = process.env && process.env.SECRET_VALUE ? process.env.SECRET
 
 passport.use('signup', new LocalStrategy({
     usernameField: 'email',
-    passwordField: 'password'
-}, function (email, password, cb) {
-    return UserModel.create({ "email": email, "password": password })
+    passwordField: 'password',
+    passReqToCallback: true
+}, function (req, email, password, cb) {
+    console.log(email, password, req.body.firstName)
+    return UserModel.create({ email, password, first_name: req.body.firstName, last_name: req.body.lastName })
         .then(user => {
             return cb(null, user);
         })

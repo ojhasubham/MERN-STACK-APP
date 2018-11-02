@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Jumbotron from '../../components/Jumbotron';
 import { Auth } from '../../utils/httpServices';
 import { errorToaster, successToaster } from '../../utils/toaster';
 import { Col, Row, Container } from '../../components/Grid';
 import { Input, FormBtn, ErrorElement } from '../../components/Form';
 import { Loader } from '../../components/Loader';
+import './Login.css';
 import { SOMETHING_WRONG, REQUEST_FAILED, EMAIL_NOT_BLANK, INCLUDE_VALID_EMAIL, INPUT_DOMAIN_EMAIL, INVALID_EMAIL, PASSWORD_NOT_BLANK } from '../../constant';
 class Login extends Component {
 	state = {
@@ -120,9 +122,15 @@ class Login extends Component {
 							/>
 							{errorPassword && <ErrorElement>{errorPassword}</ErrorElement>}
 							{errorResponse && <ErrorElement>{errorResponse}</ErrorElement>}
+							
 							<FormBtn onClick={(e) => { this.handleFormSubmit(e) }}>
 								Login
 							</FormBtn>
+							<Row>
+								<Col size="md-2" tagClass="pull-right set-margim-regierlink">
+									<Link to="/register">← Go to Register</Link>
+								</Col>
+							</Row>
 						</form>
 					</Col>
 					<Col size="md-3"></Col>

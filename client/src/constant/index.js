@@ -9,5 +9,11 @@ export const INCLUDE_VALID_EMAIL = 'Please include an "@" in the email address.'
 export const INPUT_DOMAIN_EMAIL = 'Please input domain name after "@" in the email address.';
 export const INVALID_EMAIL = 'Enter a valid email address.';
 export const PASSWORD_NOT_BLANK = 'Password field should not be blank!';
+export const CONFIRM_NOT_BLANK = 'Confirm password field should not be blank!';
+export const PASSWORD_NOT_SAME = 'Password and confirm password field should be same.';
+export const FIRST_NAME_NOT_BLANK = 'First name field should not be blank!';
+export const LAST_NAME_NOT_BLANK = 'Last name field should not be blank!';
+export const PASSWORD_LENGTH = 'Password should be minimum 4 and maximum 12 character';
+
 export const BOOK_ADDED = 'Book successfully added.';
 export const BOOK_DELETED = 'Book deleted successfully.';
