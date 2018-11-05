@@ -17,12 +17,7 @@ class Login extends Component {
 		errorResponse: ''
 	};
 
-	componentDidMount = () => {
-		let token = localStorage.getItem('token')
-		if (token) {
-			this.props.history.push('/books')
-		}
-	}
+	componentDidMount = () => { }
 	handleInputChange = event => {
 		const { name, value } = event.target;
 		this.setState({
@@ -89,7 +84,7 @@ class Login extends Component {
 			}
 		}).catch(err => {
 			Loader(false);
-			err && err.data && err.data.successStatus == false ? this.setState({ errorResponse: err.data.message ? err.data.message : SOMETHING_WRONG }) : errorToaster(SOMETHING_WRONG);			
+			err && err.data && err.data.successStatus == false ? this.setState({ errorResponse: err.data.message ? err.data.message : SOMETHING_WRONG }) : errorToaster(SOMETHING_WRONG);
 			console.log("Error", err)
 		});
 	}
@@ -122,7 +117,7 @@ class Login extends Component {
 							/>
 							{errorPassword && <ErrorElement>{errorPassword}</ErrorElement>}
 							{errorResponse && <ErrorElement>{errorResponse}</ErrorElement>}
-							
+
 							<FormBtn onClick={(e) => { this.handleFormSubmit(e) }}>
 								Login
 							</FormBtn>

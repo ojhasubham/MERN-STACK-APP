@@ -26,12 +26,7 @@ class Register extends Component {
 		errorConfirmPassword: ''
 	};
 
-	componentDidMount = () => {
-		let token = localStorage.getItem('token')
-		if (token) {
-			this.props.history.push('/books')
-		}
-	}
+	componentDidMount = () => {	}
 	handleInputChange = event => {
 		const { name, value } = event.target;
 		this.setState({
@@ -111,7 +106,6 @@ class Register extends Component {
 		Auth.register(userDetail)
 			.then(res => {
 				Loader(false);
-				console.log("RES", res)
 				let { data: { successStatus = false, message = null } = {}, data } = res;
 				if (successStatus) {
 					this.props.history.push('/');
