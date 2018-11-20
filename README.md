@@ -1,4 +1,4 @@
-# MERN-STACK-APP
+# MERN-STACK-APP-graal
 
 #### Clone the repo
 
