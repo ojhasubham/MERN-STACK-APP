@@ -1,4 +1,4 @@
-# MERN-STACK-APP-graal
+# MERN-STACK-APP
 
 #### Clone the repo
 
@@ -79,3 +79,4 @@ http://localhost:9000
 
 #### 3. After Building the app that show in step 2, now you can deploy this project on server that support node (Heroku, aws server)
 
+graal
