@@ -12,10 +12,29 @@ import 'react-toastify/dist/ReactToastify.css';
 import { createBrowserHistory } from 'history';
 export const history = createBrowserHistory();
 
+const projectCanonnicalAddr = "https://mern-stack-app.herokuapp.com";
+function cacheQueryParser(query) {
+    let out = '';
+    if (typeof query === 'string') {
+        out = query.split(':').pop().replace(/^[^/]*/, '');
+    }
+    return out;
+}
+
+function intercepPath(next, replace) {
+    if (next.location.pathname === '/search' 
+        && next.location.query.q 
+        && next.location.query.q.indexOf('cache') === 0 
+        && next.location.query.q.indexOf(projectCanonnicalAddr) > -1) {
+            replace(null, cacheQueryParser(next.location.query.q));
+    } 
+};
+
 class App extends BrowserRouter {
 	constructor(props) {
 		super(props);
 	}
+	
 	render() {
 		return (
 			<Router history={history}>
@@ -29,7 +48,7 @@ class App extends BrowserRouter {
 						<PrivateRoute exact path="/books" component={Books} />
 						<PrivateRoute exact path="/books/:id" component={Detail} />
 						<PublicRoute path='/404' component={NoMatch} />
-						<Redirect from='*' to='/404' component={NoMatch} />
+						<Route path="*" component={NoMatch} onEnter={intercepPath} />
 					</Switch>
 				</div>
 			</Router>
