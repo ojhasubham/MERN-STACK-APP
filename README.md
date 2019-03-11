@@ -26,13 +26,14 @@ http://localhost:9000/
 API List
 
 ```sh
-POST http://localhost:9000/auth/register 
+POST http://localhost:9000/auth/signup 
 Request body
-{ email:'example@exam.com', password:'xxxxx' }
+{ firstName:'abc', lastName:'mnp', email:'example@exam.com',password:'xxxxx' }
 
 POST http://localhost:9000/auth/login 
 Request body
-{ firstName:'abc', lastName:'mnp', email:'example@exam.com',password:'xxxxx' }
+{ email:'example@exam.com', password:'xxxxx' }
+
 ```
 
 ```sh
@@ -79,4 +80,3 @@ http://localhost:9000
 
 #### 3. After Building the app that show in step 2, now you can deploy this project on server that support node (Heroku, aws server)
 
-graal
